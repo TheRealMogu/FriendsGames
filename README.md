@@ -77,7 +77,8 @@ Dalla home: **"Gioca su un telefono"** (`/local`). 3+ giocatori attorno a un
 solo device, ci si passa il telefono. Nessuna rete: una volta caricata la
 pagina funziona offline; il gruppo e i punteggi restano in `localStorage`.
 
-Giochi disponibili: **L'Intruso**, **Maggioranza**, **Frequenza**.
+Giochi disponibili (7): **L'Intruso**, **L'Infiltrato**, **Maggioranza**,
+**Minoranza**, **Più probabile**, **Stime**, **Frequenza**.
 
 ### La libreria dei giochi
 
