@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* Palette scura, alto contrasto. Mobile first. */
+@theme {
+  --color-bg: #0b0d12;
+  --color-surface: #151923;
+  --color-surface-2: #1e2430;
+  --color-border: #2c3444;
+  --color-text: #f2f5fa;
+  --color-muted: #8b95a7;
+  --color-accent: #4f8cff;
+  --color-accent-strong: #2f6ffb;
+  --color-danger: #ff5d5d;
+  --color-ok: #34d399;
+}
+
+html {
+  color-scheme: dark;
+  /* Evita zoom automatico su iOS quando i campi hanno font < 16px */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100dvh;
+  -webkit-tap-highlight-color: transparent;
+}
