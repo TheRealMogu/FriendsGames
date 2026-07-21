@@ -1,7 +1,7 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import {
   normalizeCode,
   validateName,
@@ -29,6 +29,8 @@ export async function POST(req: Request) {
 
   const playerToken = validatePlayerToken(body?.player_token);
   if (!playerToken) return jsonError("player_token mancante.", 400);
+
+  const supabaseAdmin = getSupabaseAdmin();
 
   // La stanza esiste ed e' in lobby?
   const { data: room, error: roomError } = await supabaseAdmin

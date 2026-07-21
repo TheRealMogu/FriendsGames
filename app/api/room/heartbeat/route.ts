@@ -1,7 +1,7 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import { normalizeCode, validatePlayerToken, jsonError } from "@/lib/api/helpers";
 import type { HeartbeatBody, HeartbeatResponse } from "@/lib/types";
 
@@ -18,6 +18,8 @@ export async function POST(req: Request) {
 
   const playerToken = validatePlayerToken(body?.player_token);
   if (!playerToken) return jsonError("player_token mancante.", 400);
+
+  const supabaseAdmin = getSupabaseAdmin();
 
   const { data: room, error: roomError } = await supabaseAdmin
     .from("rooms")

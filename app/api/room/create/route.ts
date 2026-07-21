@@ -1,7 +1,7 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import {
   generateRoomCode,
   validateName,
@@ -28,6 +28,7 @@ export async function POST(req: Request) {
   const playerToken = validatePlayerToken(body?.player_token);
   if (!playerToken) return jsonError("player_token mancante.", 400);
 
+  const supabaseAdmin = getSupabaseAdmin();
   const hostToken = crypto.randomUUID();
 
   // Il codice ha una unique constraint: se collide, rigenera e riprova.

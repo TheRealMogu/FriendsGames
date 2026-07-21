@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { RealtimeChannel } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase/client";
+import { getSupabase } from "@/lib/supabase/client";
 import type { PlayerRow, RoomRow } from "@/lib/types";
 
 export type RoomStatus = "loading" | "ready" | "not_found" | "error";
@@ -36,7 +36,7 @@ export function useRoom(code: string): UseRoomState {
   // Rilegge tutta la lista giocatori: usato al primo caricamento e a ogni
   // (ri)connessione del websocket, per recuperare eventi persi.
   const refetchPlayers = useCallback(async (roomId: string) => {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from("players")
       .select(PLAYER_COLS)
       .eq("room_id", roomId);
@@ -46,7 +46,7 @@ export function useRoom(code: string): UseRoomState {
   }, []);
 
   const refetchRoom = useCallback(async (roomId: string) => {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from("rooms")
       .select(ROOM_COLS)
       .eq("id", roomId)
@@ -57,6 +57,7 @@ export function useRoom(code: string): UseRoomState {
   useEffect(() => {
     let cancelled = false;
     const normalized = code.trim().toUpperCase();
+    const supabase = getSupabase();
 
     async function init() {
       const { data: roomData, error: roomError } = await supabase
