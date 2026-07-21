@@ -1,11 +1,13 @@
 import type { GameDefinition } from "./types";
 import { intruso } from "./intruso";
+import { infiltrato } from "./infiltrato";
 import { maggioranza } from "./maggioranza";
-import { frequenza } from "./frequenza";
+import { minoranza } from "./minoranza";
 import { piuprobabile } from "./piuprobabile";
 import { stime } from "./stime";
-import { minoranza } from "./minoranza";
-import { infiltrato } from "./infiltrato";
+import { frequenza } from "./frequenza";
+import { verofalso } from "./verofalso";
+import { tabu } from "./tabu";
 
 // La libreria dei giochi. Aggiungerne uno = importarlo e metterlo in questa
 // lista. La logica pura di ciascuno (in `*/logic.ts`) e' trasporto-agnostica,
@@ -17,6 +19,8 @@ export const GAMES: readonly GameDefinition[] = [
   minoranza,
   piuprobabile,
   stime,
+  verofalso,
+  tabu,
   frequenza,
 ];
 

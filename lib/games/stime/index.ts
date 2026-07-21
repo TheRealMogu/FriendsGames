@@ -7,7 +7,7 @@ export const stime: GameDefinition = {
     name: "Stime",
     tagline: "Trivia numerica: il più vicino vince.",
     emoji: "🧠",
-    minPlayers: 3,
+    minPlayers: 2,
     maxPlayers: 12,
   },
   LocalGame: StimeLocalGame,

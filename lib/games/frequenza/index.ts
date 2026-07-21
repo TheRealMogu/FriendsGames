@@ -7,7 +7,7 @@ export const frequenza: GameDefinition = {
     name: "Frequenza",
     tagline: "Un indizio, una scala. Avvicinati all'obiettivo segreto.",
     emoji: "🎯",
-    minPlayers: 3,
+    minPlayers: 2,
     maxPlayers: 10,
   },
   LocalGame: FrequenzaLocalGame,

@@ -73,12 +73,15 @@ Apri http://localhost:3000
 
 ## Modalità locale (un telefono, offline)
 
-Dalla home: **"Gioca su un telefono"** (`/local`). 3+ giocatori attorno a un
-solo device, ci si passa il telefono. Nessuna rete: una volta caricata la
+Dalla home: **"Gioca su un telefono"** (`/local`). Da 2 a 12 giocatori attorno
+a un solo device, ci si passa il telefono. Nessuna rete: una volta caricata la
 pagina funziona offline; il gruppo e i punteggi restano in `localStorage`.
 
-Giochi disponibili (7): **L'Intruso**, **L'Infiltrato**, **Maggioranza**,
-**Minoranza**, **Più probabile**, **Stime**, **Frequenza**.
+Giochi disponibili (9): **L'Intruso**, **L'Infiltrato**, **Maggioranza**,
+**Minoranza**, **Più probabile**, **Stime**, **Vero o Falso**, **Tabù a tempo**,
+**Frequenza**. Quelli adatti anche in due (Stime, Vero o Falso, Tabù,
+Maggioranza, Frequenza) restano abilitati con 2 giocatori; gli altri chiedono
+almeno 3 e il menu li mostra disattivati.
 
 ### La libreria dei giochi
 

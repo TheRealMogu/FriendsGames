@@ -7,7 +7,7 @@ export const maggioranza: GameDefinition = {
     name: "Maggioranza",
     tagline: "Rispondi in segreto. Punto a chi sta col gruppo.",
     emoji: "🗳️",
-    minPlayers: 3,
+    minPlayers: 2,
     maxPlayers: 12,
   },
   LocalGame: MaggioranzaLocalGame,

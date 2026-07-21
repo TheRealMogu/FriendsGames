@@ -34,7 +34,7 @@ export default function LocalRoot() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const s = JSON.parse(raw) as StoredSession;
-        if (s.players?.length >= 3) {
+        if (s.players?.length >= 2) {
           setPlayers(s.players);
           setTotals(s.totals ?? {});
           setStep("menu");
@@ -57,8 +57,8 @@ export default function LocalRoot() {
   function start() {
     setError(null);
     const clean = names.map((n) => n.trim()).filter((n) => n.length > 0);
-    if (clean.length < 3) {
-      setError("Servono almeno 3 giocatori.");
+    if (clean.length < 2) {
+      setError("Servono almeno 2 giocatori.");
       return;
     }
     const lower = clean.map((n) => n.toLowerCase());
@@ -116,7 +116,7 @@ export default function LocalRoot() {
         <header>
           <h1 className="text-3xl font-black">Chi gioca?</h1>
           <p className="mt-1 text-muted">
-            Un solo telefono, ve lo passate. Da 3 a {MAX_SLOTS} giocatori.
+            Un solo telefono, ve lo passate. Da 2 a {MAX_SLOTS} giocatori.
           </p>
         </header>
 
@@ -144,7 +144,7 @@ export default function LocalRoot() {
                 placeholder={`Giocatore ${i + 1}`}
                 autoComplete="off"
               />
-              {names.length > 3 && (
+              {names.length > 2 && (
                 <button
                   onClick={() => setNames(names.filter((_, j) => j !== i))}
                   className="min-h-14 w-14 rounded-2xl border border-border bg-surface text-2xl text-muted active:bg-surface-2"
