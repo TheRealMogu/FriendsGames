@@ -71,6 +71,28 @@ Apri http://localhost:3000
    niente doppioni.
 4. Chiudi la scheda B e aspetta ~60s: quel giocatore appare **attenuato**.
 
-## Fuori scope (Tappa 1)
+## Modalità locale (un telefono, offline)
 
-Giochi, punteggi, round, votazioni, autenticazione, test automatici.
+Dalla home: **"Gioca su un telefono"** (`/local`). 3+ giocatori attorno a un
+solo device, ci si passa il telefono. Nessuna rete: una volta caricata la
+pagina funziona offline; il gruppo e i punteggi restano in `localStorage`.
+
+Giochi disponibili: **L'Intruso**, **Maggioranza**, **Frequenza**.
+
+### La libreria dei giochi
+
+Ogni gioco vive in `lib/games/<id>/` con:
+
+- `logic.ts` — logica **pura** (crea il round, calcola i punteggi), senza rete:
+  è trasporto-agnostica e potrà essere riusata anche per il gioco online.
+- `LocalGame.tsx` — la UI hotseat, costruita sulla primitiva condivisa
+  `components/local/PassAround.tsx` ("passa il telefono a X").
+- `index.ts` — i metadati + il collegamento (`GameDefinition`).
+
+Aggiungere un gioco = crearne la cartella e aggiungerlo a `lib/games/registry.ts`.
+
+## Prossimi passi (non ancora fatti)
+
+- Gioco **online** vero: le API di round/answer/vote e l'autorizzazione host,
+  che riuseranno la stessa `logic.ts` di ogni gioco.
+- PWA per l'offline installabile.

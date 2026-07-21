@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   getOrCreatePlayerToken,
@@ -122,6 +123,21 @@ export default function Home() {
           >
             Entra
           </button>
+
+          <div className="flex items-center gap-3 py-1">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs uppercase tracking-widest text-muted">
+              oppure
+            </span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <Link
+            href="/local"
+            className="min-h-14 flex items-center justify-center rounded-2xl border border-border bg-surface px-6 text-lg font-bold text-text active:bg-surface-2"
+          >
+            🎉 Gioca su un telefono
+          </Link>
         </div>
       )}
 
