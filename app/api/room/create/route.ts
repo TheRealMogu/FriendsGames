@@ -8,13 +8,27 @@ import {
   validatePlayerToken,
   jsonError,
 } from "@/lib/api/helpers";
+import { rateLimit, clientIp } from "@/lib/api/rateLimit";
 import type { CreateRoomBody, CreateRoomResponse, PlayerRow } from "@/lib/types";
 
 // Postgres: violazione di unique constraint.
 const UNIQUE_VIOLATION = "23505";
 const MAX_CODE_ATTEMPTS = 5;
 
+// Max 5 stanze al minuto per IP: frena chi crea stanze in loop.
+const CREATE_MAX = 5;
+const CREATE_WINDOW_MS = 60_000;
+
 export async function POST(req: Request) {
+  const limit = rateLimit(`create:${clientIp(req)}`, CREATE_MAX, CREATE_WINDOW_MS);
+  if (!limit.ok) {
+    const seconds = Math.ceil(limit.retryAfterMs / 1000);
+    return jsonError(
+      `Troppe stanze create. Riprova tra ${seconds} secondi.`,
+      429
+    );
+  }
+
   let body: CreateRoomBody;
   try {
     body = (await req.json()) as CreateRoomBody;

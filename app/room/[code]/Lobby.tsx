@@ -1,26 +1,38 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRoom } from "@/lib/hooks/useRoom";
 import { getHostToken, getPlayerToken } from "@/lib/identity";
-import type { HeartbeatBody } from "@/lib/types";
+import type { HeartbeatBody, PlayerRow, RoomRow } from "@/lib/types";
 
 const HEARTBEAT_MS = 25_000; // ping ogni 25 secondi
 const STALE_MS = 60_000; // oltre 60s senza ping -> attenuato
 const CLOCK_TICK_MS = 10_000; // ricalcola la staleness ogni 10s
 
-export default function Lobby({ code }: { code: string }) {
-  const { status, room, players, connected } = useRoom(code);
+// Vista presentazionale della lobby. Riceve lo stato gia' pronto (stanza +
+// giocatori) dal componente che gestisce Realtime e l'appartenenza.
+export default function Lobby({
+  code,
+  room,
+  players,
+  connected,
+}: {
+  code: string;
+  room: RoomRow;
+  players: PlayerRow[];
+  connected: boolean;
+}) {
   const [now, setNow] = useState(() => Date.now());
   const [copied, setCopied] = useState(false);
+  const [isHost, setIsHost] = useState(false);
 
-  // Sono l'host se ho l'host_token di questa stanza salvato sul telefono.
-  const isHost = useMemo(() => getHostToken(code) !== null, [code]);
+  // localStorage e' leggibile solo nel browser: leggo dopo il mount.
+  useEffect(() => {
+    setIsHost(getHostToken(code) !== null);
+  }, [code]);
 
   // Heartbeat: tiene aggiornato last_seen finche' la pagina e' aperta.
   useEffect(() => {
-    if (status !== "ready") return;
     const token = getPlayerToken();
     if (!token) return;
 
@@ -41,7 +53,7 @@ export default function Lobby({ code }: { code: string }) {
     ping();
     const id = setInterval(ping, HEARTBEAT_MS);
     return () => clearInterval(id);
-  }, [status, code]);
+  }, [code]);
 
   // Orologio: fa ricalcolare "chi e' offline" anche senza nuovi eventi.
   useEffect(() => {
@@ -57,45 +69,6 @@ export default function Lobby({ code }: { code: string }) {
     } catch {
       // clipboard non disponibile: ignora, il codice e' comunque visibile.
     }
-  }
-
-  if (status === "loading") {
-    return (
-      <main className="mx-auto flex min-h-dvh max-w-md items-center justify-center px-6">
-        <p className="text-muted">Carico la stanza…</p>
-      </main>
-    );
-  }
-
-  if (status === "not_found") {
-    return (
-      <main className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-6 px-6 text-center">
-        <div>
-          <h1 className="text-2xl font-bold">Stanza non trovata</h1>
-          <p className="mt-2 text-muted">
-            Il codice <span className="font-mono font-bold">{code}</span> non
-            esiste o la partita e' stata chiusa.
-          </p>
-        </div>
-        <Link
-          href="/"
-          className="min-h-14 rounded-2xl bg-accent px-6 py-4 text-lg font-bold text-white active:bg-accent-strong"
-        >
-          Torna alla home
-        </Link>
-      </main>
-    );
-  }
-
-  if (status === "error" || !room) {
-    return (
-      <main className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-6 px-6 text-center">
-        <p className="text-danger">Qualcosa e' andato storto nel caricare la stanza.</p>
-        <Link href="/" className="text-accent underline">
-          Torna alla home
-        </Link>
-      </main>
-    );
   }
 
   return (

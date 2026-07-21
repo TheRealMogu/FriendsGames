@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   getOrCreatePlayerToken,
   saveHostToken,
+  saveMembership,
 } from "@/lib/identity";
 import type {
   ApiError,
@@ -43,6 +44,7 @@ export default function Home() {
       }
       const ok = data as CreateRoomResponse;
       saveHostToken(ok.code, ok.host_token);
+      saveMembership(ok.code, ok.player.id);
       router.push(`/room/${ok.code}`);
     } catch {
       setError("Rete non raggiungibile. Riprova.");
@@ -75,6 +77,7 @@ export default function Home() {
         return;
       }
       const ok = data as JoinRoomResponse;
+      saveMembership(ok.code, ok.player.id);
       router.push(`/room/${ok.code}`);
     } catch {
       setError("Rete non raggiungibile. Riprova.");

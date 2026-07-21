@@ -20,7 +20,8 @@ const ROOM_COLS = "id, code, phase, game_id, round_no, created_at";
 // Carica lo stato iniziale della stanza e poi lo tiene aggiornato via Realtime.
 // Si iscrive a `players` e a `rooms` (tabelle, non view: Realtime non funziona
 // sulle view). Gestisce riconnessione del websocket e pulizia all'unmount.
-export function useRoom(code: string): UseRoomState {
+// Cambiare `reloadKey` forza un ricaricamento completo (bottone "riprova").
+export function useRoom(code: string, reloadKey = 0): UseRoomState {
   const [status, setStatus] = useState<RoomStatus>("loading");
   const [room, setRoom] = useState<RoomRow | null>(null);
   const [players, setPlayers] = useState<PlayerRow[]>([]);
@@ -58,6 +59,7 @@ export function useRoom(code: string): UseRoomState {
     let cancelled = false;
     const normalized = code.trim().toUpperCase();
     const supabase = getSupabase();
+    setStatus("loading");
 
     async function init() {
       const { data: roomData, error: roomError } = await supabase
@@ -147,7 +149,7 @@ export function useRoom(code: string): UseRoomState {
         channelRef.current = null;
       }
     };
-  }, [code, refetchPlayers, refetchRoom]);
+  }, [code, reloadKey, refetchPlayers, refetchRoom]);
 
   return { status, room, players, connected };
 }
